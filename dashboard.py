@@ -20,33 +20,50 @@ st.markdown("""
     /* Light Industrial Background */
     .stApp { background-color: #F5F5F5; }
     
+    /* Machine Card Styling - uses Streamlit's theme colors */
+    .machine-card-container {
+        background-color: var(--background-color);
+        border: 1px solid var(--secondary-background-color);
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    
+    .machine-title {
+        color: var(--text-color);
+        margin-bottom: 15px;
+    }
+    
     /* Remove default streamlit styling that might interfere */
     .stButton > button {
         width: 100%;
-        background-color: #FFFFFF;
-        color: #1a1a1a;
-        border: 1px solid #DDD;
+        background-color: var(--background-color);
+        color: var(--text-color);
+        border: 1px solid var(--secondary-background-color);
         border-radius: 4px;
         padding: 8px;
         font-weight: 500;
     }
     .stButton > button:hover {
-        background-color: #F0F0F0;
+        background-color: var(--secondary-background-color);
         border-color: #00E396;
     }
     
     /* KPIs */
-    .kpi-val { font-size: 26px; font-weight: bold; color: #1a1a1a; }
-    .kpi-label { font-size: 12px; color: #666; text-transform: uppercase; }
+    .kpi-val { font-size: 26px; font-weight: bold; color: var(--text-color); }
+    .kpi-label { font-size: 12px; color: var(--text-color); opacity: 0.6; text-transform: uppercase; }
     
     /* Alerts */
     .alert-box {
-        background-color: #FFEBEE;
+        background-color: rgba(255, 69, 96, 0.1);
         border-left: 5px solid #FF4560;
         padding: 10px;
         border-radius: 4px;
         margin-bottom: 10px;
     }
+    
+    .alert-text {
+        color: var(--text-color);
+    }
+
 </style>
 """, unsafe_allow_html=True)
 
@@ -135,20 +152,17 @@ def render_machine_card(name):
 
     # The Card Layout with inline styling for border
     st.markdown(f"""
-    <div style="
-        background-color: #FFFFFF;
-        border: 1px solid #DDD;
+    <div class="machine-card-container" style="
         border-top: 4px solid {border_color};
         border-radius: 8px;
         padding: 20px;
         text-align: center;
         margin-bottom: 15px;
-        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
     ">
-        <h4 style="color: #1a1a1a; margin-bottom: 15px;">{status_icon} {name}</h4>
+        <h4 class="machine-title">{status_icon} {name}</h4>
         <div style="display:flex; justify-content:space-around; margin-bottom: 10px;">
             <div>
-                <div class="kpi-val" style="color: #1a1a1a;">{data['amps']} A</div>
+                <div class="kpi-val">{data['amps']} A</div>
                 <div class="kpi-label">Load</div>
             </div>
             <div>
@@ -181,7 +195,7 @@ def view_unit_1():
         render_machine_card("Shredder 2")
         
     with col_arrow:
-        st.markdown("<br><br><br><br><h1 style='color: #999;'>➡</h1>", unsafe_allow_html=True)
+        st.markdown("<br><br><br><br><h1 style='color: var(--text-color); opacity: 0.4;'>➡</h1>", unsafe_allow_html=True)
         
     with col_mill:
         st.subheader("Step 2: Mills")
@@ -199,7 +213,7 @@ def view_unit_2():
         st.subheader("Primary")
         render_machine_card("Unit 2 Shredder")
     with c2:
-        st.markdown("<br><br><h1 style='color: #999;'>➡</h1>", unsafe_allow_html=True)
+        st.markdown("<br><br><h1 style='color: var(--text-color); opacity: 0.4;'>➡</h1>", unsafe_allow_html=True)
     with c3:
         st.subheader("Secondary")
         render_machine_card("Unit 2 Crusher")
@@ -273,7 +287,7 @@ def view_detail():
                 st.markdown(f"""
                 <div class="alert-box">
                     <h3 style="color: #FF4560; margin-top: 0;">🚫 SPARES MISSING</h3>
-                    <p style="color: #1a1a1a;">Cannot perform <b>{maint['Next']}</b>. Spare parts stock is 0.</p>
+                    <p class="alert-text">Cannot perform <b>{maint['Next']}</b>. Spare parts stock is 0.</p>
                     <p style="color: #D32F2F;">⚠️ ORDER IMMEDIATELY</p>
                 </div>
                 """, unsafe_allow_html=True)
