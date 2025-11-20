@@ -27,11 +27,6 @@ st.markdown("""
         box-shadow: 0 2px 4px rgba(0,0,0,0.1);
     }
     
-    .machine-title {
-        color: var(--text-color);
-        margin-bottom: 15px;
-    }
-    
     /* Remove default streamlit styling that might interfere */
     .stButton > button {
         width: 100%;
@@ -47,10 +42,6 @@ st.markdown("""
         border-color: #00E396;
     }
     
-    /* KPIs */
-    .kpi-val { font-size: 26px; font-weight: bold; color: var(--text-color); }
-    .kpi-label { font-size: 12px; color: var(--text-color); opacity: 0.6; text-transform: uppercase; }
-    
     /* Alerts */
     .alert-box {
         background-color: rgba(255, 69, 96, 0.1);
@@ -59,10 +50,7 @@ st.markdown("""
         border-radius: 4px;
         margin-bottom: 10px;
     }
-    
-    .alert-text {
-        color: var(--text-color);
-    }
+
 
 </style>
 """, unsafe_allow_html=True)
@@ -159,15 +147,15 @@ def render_machine_card(name):
         text-align: center;
         margin-bottom: 15px;
     ">
-        <h4 class="machine-title">{status_icon} {name}</h4>
+        <h4 style="margin-bottom: 15px; font-weight: 600;">{status_icon} {name}</h4>
         <div style="display:flex; justify-content:space-around; margin-bottom: 10px;">
             <div>
-                <div class="kpi-val">{data['amps']} A</div>
-                <div class="kpi-label">Load</div>
+                <div style="font-size: 26px; font-weight: bold;">{data['amps']} A</div>
+                <div style="font-size: 12px; opacity: 0.6; text-transform: uppercase;">Load</div>
             </div>
             <div>
-                <div class="kpi-val" style="color:{vib_color}">{data['vib']:.1f}</div>
-                <div class="kpi-label">Vib (mm/s)</div>
+                <div style="font-size: 26px; font-weight: bold; color:{vib_color}">{data['vib']:.1f}</div>
+                <div style="font-size: 12px; opacity: 0.6; text-transform: uppercase;">Vib (mm/s)</div>
             </div>
         </div>
     </div>
@@ -195,7 +183,7 @@ def view_unit_1():
         render_machine_card("Shredder 2")
         
     with col_arrow:
-        st.markdown("<br><br><br><br><h1 style='color: var(--text-color); opacity: 0.4;'>➡</h1>", unsafe_allow_html=True)
+        st.markdown("<br><br><br><br><h1 style='opacity: 0.3;'>➡</h1>", unsafe_allow_html=True)
         
     with col_mill:
         st.subheader("Step 2: Mills")
@@ -213,7 +201,7 @@ def view_unit_2():
         st.subheader("Primary")
         render_machine_card("Unit 2 Shredder")
     with c2:
-        st.markdown("<br><br><h1 style='color: var(--text-color); opacity: 0.4;'>➡</h1>", unsafe_allow_html=True)
+        st.markdown("<br><br><h1 style='opacity: 0.3;'>➡</h1>", unsafe_allow_html=True)
     with c3:
         st.subheader("Secondary")
         render_machine_card("Unit 2 Crusher")
@@ -287,7 +275,7 @@ def view_detail():
                 st.markdown(f"""
                 <div class="alert-box">
                     <h3 style="color: #FF4560; margin-top: 0;">🚫 SPARES MISSING</h3>
-                    <p class="alert-text">Cannot perform <b>{maint['Next']}</b>. Spare parts stock is 0.</p>
+                    <p>Cannot perform <b>{maint['Next']}</b>. Spare parts stock is 0.</p>
                     <p style="color: #D32F2F;">⚠️ ORDER IMMEDIATELY</p>
                 </div>
                 """, unsafe_allow_html=True)
