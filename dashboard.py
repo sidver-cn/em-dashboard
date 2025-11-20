@@ -17,39 +17,36 @@ st.set_page_config(
 # Custom CSS to make it look like a Professional SCADA System
 st.markdown("""
 <style>
-    /* Light Industrial Background */
-    .stApp { background-color: #F5F5F5; }
+    /* Responsive Background - adapts to theme */
+    [data-testid="stAppViewContainer"] {
+        background-color: var(--background-color);
+    }
     
-    /* Machine Card Styling - force white background in all themes */
+    /* Machine Card Styling - adapts to theme */
     .machine-card-container {
-        background-color: #FFFFFF !important;
-        border: 1px solid #DDDDDD !important;
+        background-color: var(--secondary-background-color) !important;
+        border: 1px solid rgba(128, 128, 128, 0.2) !important;
         box-shadow: 0 2px 4px rgba(0,0,0,0.1);
     }
     
-    /* Remove default streamlit styling that might interfere */
+    /* Button styling - adapts to theme */
     .stButton > button {
         width: 100%;
-        background-color: #FFFFFF !important;
-        color: #1a1a1a !important;
-        border: 1px solid #DDDDDD !important;
+        background-color: var(--secondary-background-color) !important;
+        color: var(--text-color) !important;
+        border: 1px solid rgba(128, 128, 128, 0.2) !important;
         border-radius: 4px;
         padding: 8px;
         font-weight: 500;
     }
     .stButton > button:hover {
-        background-color: #F5F5F5 !important;
         border-color: #00E396 !important;
+        opacity: 0.8;
     }
     
-    /* Ensure page titles and headers are visible in dark mode */
-    h1, h2, h3, h4, h5, h6 {
-        color: var(--text-color) !important;
-    }
-    
-    /* Alerts */
+    /* Alerts - adapts to theme */
     .alert-box {
-        background-color: #FFEBEE !important;
+        background-color: rgba(255, 69, 96, 0.15) !important;
         border-left: 5px solid #FF4560;
         padding: 10px;
         border-radius: 4px;
@@ -57,8 +54,14 @@ st.markdown("""
     }
     
     .alert-box p, .alert-box h3 {
-        color: #1a1a1a !important;
+        color: var(--text-color) !important;
     }
+    
+    /* Sidebar adapts to theme */
+    [data-testid="stSidebar"] {
+        background-color: var(--secondary-background-color);
+    }
+
 
 
 
@@ -158,15 +161,15 @@ def render_machine_card(name):
         text-align: center;
         margin-bottom: 15px;
     ">
-        <h4 style="margin-bottom: 15px; font-weight: 600; color: #1a1a1a !important;">{status_icon} {name}</h4>
+        <h4 style="margin-bottom: 15px; font-weight: 600;">{status_icon} {name}</h4>
         <div style="display:flex; justify-content:space-around; margin-bottom: 10px;">
             <div>
-                <div style="font-size: 26px; font-weight: bold; color: #1a1a1a !important;">{data['amps']} A</div>
-                <div style="font-size: 12px; color: #666 !important; text-transform: uppercase;">Load</div>
+                <div style="font-size: 26px; font-weight: bold;">{data['amps']} A</div>
+                <div style="font-size: 12px; opacity: 0.6; text-transform: uppercase;">Load</div>
             </div>
             <div>
                 <div style="font-size: 26px; font-weight: bold; color:{vib_color} !important;">{data['vib']:.1f}</div>
-                <div style="font-size: 12px; color: #666 !important; text-transform: uppercase;">Vib (mm/s)</div>
+                <div style="font-size: 12px; opacity: 0.6; text-transform: uppercase;">Vib (mm/s)</div>
             </div>
         </div>
     </div>
@@ -194,7 +197,7 @@ def view_unit_1():
         render_machine_card("Shredder 2")
         
     with col_arrow:
-        st.markdown("<br><br><br><br><h1 style='color: #888888 !important;'>➡</h1>", unsafe_allow_html=True)
+        st.markdown("<br><br><br><br><h1 style='opacity: 0.3;'>➡</h1>", unsafe_allow_html=True)
         
     with col_mill:
         st.subheader("Step 2: Mills")
@@ -212,7 +215,7 @@ def view_unit_2():
         st.subheader("Primary")
         render_machine_card("Unit 2 Shredder")
     with c2:
-        st.markdown("<br><br><h1 style='color: #888888 !important;'>➡</h1>", unsafe_allow_html=True)
+        st.markdown("<br><br><h1 style='opacity: 0.3;'>➡</h1>", unsafe_allow_html=True)
     with c3:
         st.subheader("Secondary")
         render_machine_card("Unit 2 Crusher")
@@ -286,8 +289,8 @@ def view_detail():
                 st.markdown(f"""
                 <div class="alert-box">
                     <h3 style="color: #FF4560 !important; margin-top: 0;">🚫 SPARES MISSING</h3>
-                    <p style="color: #1a1a1a !important;">Cannot perform <b>{maint['Next']}</b>. Spare parts stock is 0.</p>
-                    <p style="color: #D32F2F !important;">⚠️ ORDER IMMEDIATELY</p>
+                    <p>Cannot perform <b>{maint['Next']}</b>. Spare parts stock is 0.</p>
+                    <p style="color: #FF6B6B !important;">⚠️ ORDER IMMEDIATELY</p>
                 </div>
                 """, unsafe_allow_html=True)
             elif maint['Spare_Status'] == "LOW":
